@@ -1,0 +1,3 @@
+[submodule "htb-api"]
+	path = htb-api
+	url = https://github.com/NxtDaemon/htb-api
