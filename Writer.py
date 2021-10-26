@@ -46,8 +46,7 @@ class Writeup():
                         str(number - 3)  # ! May Need Fixing
 
                 with open(Filename, "w+") as f:
-                    f.write(f"""HTB - {MachineObj.name.capitalize()} [{MachineObj.difficulty}]\n\n**Name** : {MachineObj.name}\n**Difficulty** : {MachineObj.difficulty}\n**OS** : {MachineObj.os}
-    **URL** : [{"https://app.hackthebox.eu/machines/" + str(self.Machine_ID)}]({"https://app.hackthebox.eu/machines/" + str(self.Machine_ID)})\n**Points** : {MachineObj.points}\n**Stars** : {MachineObj.stars}\n**Internal IP** : 10.10.10.{MachineIP}""")
+                    f.write(f"""HTB - {MachineObj.name.capitalize()} [{MachineObj.difficulty}]\n\n**Name** : {MachineObj.name}\n**Difficulty** : {MachineObj.difficulty}\n**OS** : {MachineObj.os}**URL** : [{"https://app.hackthebox.eu/machines/" + str(number)}]({"https://app.hackthebox.eu/machines/" + str(self.Machine_ID)})\n**Points** : {MachineObj.points}\n**Stars** : {MachineObj.stars}\n**Internal IP** : 10.10.10.{MachineIP}""")
 
                 log.progress(f"    Written to {Filename}\n")
             except errors.NotFoundException:
@@ -61,8 +60,7 @@ class Writeup():
 
                 Filename = f"D:\\HTB\\{ChallengeObj.name}.md"
                 with open(Filename, "a+") as f:
-                    f.write(f"""HTB - {ChallengeObj.name.capitalize()} [{ChallengeObj.category}]\n\n**Name** : {ChallengeObj.name}\n**Category** : {ChallengeObj.category}\n**Difficulty** : {ChallengeObj.difficulty}
-    **Description** : `{ChallengeObj.description}`\n**URL** : [{"https://app.hackthebox.eu/challenge/" + str(self.Challenge_ID)}]({"https://app.hackthebox.eu/challenge/" + str(self.Challenge_ID)})\n**Points** : {ChallengeObj.points}""")
+                    f.write(f"""HTB - {ChallengeObj.name.capitalize()} [{ChallengeObj.category}]\n\n**Name** : {ChallengeObj.name}\n**Category** : {ChallengeObj.category}\n**Difficulty** : {ChallengeObj.difficulty}**Description** : `{ChallengeObj.description}`\n**URL** : [{"https://app.hackthebox.eu/challenge/" + str(number)}]({"https://app.hackthebox.eu/challenge/" + str(self.Challenge_ID)})\n**Points** : {ChallengeObj.points}""")
 
                 log.success(f"    Written to {Filename}")
             except errors.NotFoundException:
