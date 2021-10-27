@@ -3,7 +3,7 @@ from getpass import getpass
 from pwn import *
 import argparse
 import os
-
+import pathlib
 
 def _LEN(value):
     if value != None:
@@ -21,7 +21,11 @@ class Writeup():
         self.Machine_ID = Args.machine
         self.Challenge_ID = Args.challenge
         self.Client = Client
-        self.Home = os.getenv("HOME")  # * for Windows use "%UserProfile%"
+        
+        if os.name == "posix":
+            self.Home = os.getenv("HOME") 
+        elif os.name == "nt":
+            self.Home = os.getenv("%UserProfile%")
 
         if self.Machine_ID:
             self.MachineWriteup()
@@ -37,7 +41,7 @@ class Writeup():
             try:
                 log.progress(f"Machine ID : {number}")
                 MachineObj = self.Client.get_machine(number)
-                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\Boxes\\Headers\\{MachineObj.name}.md"
+                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Boxes\\Headers\\{MachineObj.name}.md"
 
                 if number <= 3:
                     MachineIP = "10.10.10." + str(number)
@@ -46,7 +50,15 @@ class Writeup():
                         str(number - 3)  # ! May Need Fixing
 
                 with open(Filename, "w+") as f:
-                    f.write(f"""HTB - {MachineObj.name.capitalize()} [{MachineObj.difficulty}]\n\n**Name** : {MachineObj.name}\n**Difficulty** : {MachineObj.difficulty}\n**OS** : {MachineObj.os}**URL** : [{"https://app.hackthebox.eu/machines/" + str(number)}]({"https://app.hackthebox.eu/machines/" + str(self.Machine_ID)})\n**Points** : {MachineObj.points}\n**Stars** : {MachineObj.stars}\n**Internal IP** : 10.10.10.{MachineIP}""")
+                    Content = f"HTB - {MachineObj.name.title()}\n"
+                    Content += f"**Name** : {MachineObj.name}\n"
+                    Content += f"**Difficulty** : {MachineObj.difficulty}\n"
+                    Content += f"**OS** : {MachineObj.os}"
+                    Content += f'**URL** : [{"https://app.hackthebox.eu/machines/" + str(number)}]({"https://app.hackthebox.eu/machines/" + str(self.Machine_ID)})\n'
+                    Content += f"**Points** : {MachineObj.points}\n"
+                    Content += f"**Stars** : {MachineObj.stars}\n"
+                    Content += f"**Internal IP** : 10.10.10.{MachineIP}\n"
+                    f.write(Content)
 
                 log.progress(f"    Written to {Filename}\n")
             except errors.NotFoundException:
@@ -58,9 +70,16 @@ class Writeup():
                 log.progress(f"Challenge ID : {number}")
                 ChallengeObj = self.Client.get_challenge(number)
 
-                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\Challenges\\Headers\\{ChallengeObj.name}.md"
-                with open(Filename, "a+",encoding='utf-8') as f:
-                    f.write(f"""HTB - {ChallengeObj.name.title()} [{ChallengeObj.category}]\n\n**Name** : {ChallengeObj.name}\n**Category** : {ChallengeObj.category}\n**Difficulty** : {ChallengeObj.difficulty}\n**Description** : `{ChallengeObj.description}`\n**URL** : [{"https://app.hackthebox.eu/challenge/" + str(number)}]({"https://app.hackthebox.eu/challenge/" + str(number)})\n**Points** : {ChallengeObj.points}""")
+                Filename = f'C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Challenges\\Headers\\{ChallengeObj.name}.md'
+                with open(Filename, "a+", encoding='utf-8') as f:
+                    Content = f"HTB - {ChallengeObj.name.title()} [{ChallengeObj.category}]\n\n"
+                    Content += f"```\n**Name** : {ChallengeObj.name}\n"
+                    Content += f"**Category** : {ChallengeObj.category}\n"
+                    Content += f"**Difficulty** : {ChallengeObj.difficulty}\n"
+                    Content += f"**Description** : `{ChallengeObj.description}`\n"
+                    Content += f'**URL** : [{"https://app.hackthebox.eu/challenge/" + str(number)}]({"https://app.hackthebox.eu/challenge/" + str(number)})\n'
+                    Content += f"**Points** : {ChallengeObj.points}\n```"
+                    f.write(Content)
 
                 log.success(f"    Written to {Filename}")
             except errors.NotFoundException:
