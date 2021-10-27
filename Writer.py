@@ -37,7 +37,7 @@ class Writeup():
             try:
                 log.progress(f"Machine ID : {number}")
                 MachineObj = self.Client.get_machine(number)
-                Filename = f"D:\\HTB\\{number}.md"
+                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\Boxes\\Headers\\{MachineObj.name}.md"
 
                 if number <= 3:
                     MachineIP = "10.10.10." + str(number)
@@ -58,9 +58,9 @@ class Writeup():
                 log.progress(f"Challenge ID : {number}")
                 ChallengeObj = self.Client.get_challenge(number)
 
-                Filename = f"D:\\HTB\\{ChallengeObj.name}.md"
-                with open(Filename, "a+") as f:
-                    f.write(f"""HTB - {ChallengeObj.name.capitalize()} [{ChallengeObj.category}]\n\n**Name** : {ChallengeObj.name}\n**Category** : {ChallengeObj.category}\n**Difficulty** : {ChallengeObj.difficulty}**Description** : `{ChallengeObj.description}`\n**URL** : [{"https://app.hackthebox.eu/challenge/" + str(number)}]({"https://app.hackthebox.eu/challenge/" + str(self.Challenge_ID)})\n**Points** : {ChallengeObj.points}""")
+                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\Challenges\\Headers\\{ChallengeObj.name}.md"
+                with open(Filename, "a+",encoding='utf-8') as f:
+                    f.write(f"""HTB - {ChallengeObj.name.title()} [{ChallengeObj.category}]\n\n**Name** : {ChallengeObj.name}\n**Category** : {ChallengeObj.category}\n**Difficulty** : {ChallengeObj.difficulty}\n**Description** : `{ChallengeObj.description}`\n**URL** : [{"https://app.hackthebox.eu/challenge/" + str(number)}]({"https://app.hackthebox.eu/challenge/" + str(number)})\n**Points** : {ChallengeObj.points}""")
 
                 log.success(f"    Written to {Filename}")
             except errors.NotFoundException:
@@ -79,7 +79,7 @@ if __name__ == "__main__":
     # GetPass Securely
     Password = getpass(f"\033[93mInput your Password > \033[0m")
     Client = HTBClient(email="", password=Password)
-    print(f"[*] Authenticated as {green(Client.user.name)}")
+    log.info(f"Authenticated as {green(Client.user.name)}")
     c, m = _LEN(Args.challenge), _LEN(Args.machine)
-    print(f"[*] Processing {green(c)} Challenges and {green(m)} Machines")
+    log.info(f"Processing {green(c)} Challenges and {green(m)} Machines")
     Writeup(Args, Client)
