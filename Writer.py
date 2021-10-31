@@ -32,7 +32,7 @@ class Writeup():
             self.MachineWriteup()
 
         if self.Challenge_ID:
-            self.Challenge()
+            self.ChallengeWriteup()
 
         if not self.Challenge_ID and not self.Machine_ID:
             log.error("ID Argument Missing")
@@ -42,9 +42,10 @@ class Writeup():
             try:
                 log.progress(f"Machine ID : {number}")
                 MachineObj = self.Client.get_machine(number)
-                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Boxes\\Headers\\{MachineObj.name}.md"
+                File = f"{MachineObj.name}.md"
+                File = re.sub(r'[^\w\-_\. ]', '_', File)
+                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Boxes\\_Headers\\{File}"
 
-                Filename = re.sub(r'[^\w\-_\. ]', '_', Filename)
 
                 
                 if number <= 3:
@@ -64,19 +65,20 @@ class Writeup():
                     Content += f"**Internal IP** : {MachineIP}\n"
                     f.write(Content)
 
-                log.progress(f"    Written to {Filename}\n")
+                log.success(f"    Written to {File}\n")
             except errors.NotFoundException:
                 log.info("Machine with this ID does not exist.\n")
 
-    def Challenge(self):
+    def ChallengeWriteup(self):
         for number in self.Challenge_ID:
             try:
                 log.progress(f"Challenge ID : {number}")
                 ChallengeObj = self.Client.get_challenge(number)
 
-                Filename = f'C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Challenges\\Headers\\{ChallengeObj.name}.md'
+                File = f"{ChallengeObj.name}.md"
+                File = re.sub(r'[^\w\-_\. ]', '_', File)
+                Filename = f'C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Challenges\\_Headers\\{File}'
                 
-                Filename = re.sub(r'[^\w\-_\. ]', '_', Filename)    
                 with open(Filename, "a+", encoding='utf-8') as f:
                     Content = f"HTB - {ChallengeObj.name.title()} [{ChallengeObj.category}]\n\n"
                     Content += f"```\n**Name** : {ChallengeObj.name}\n"
@@ -87,7 +89,7 @@ class Writeup():
                     Content += f"**Points** : {ChallengeObj.points}\n```"
                     f.write(Content)
 
-                log.success(f"    Written to {Filename}")
+                log.success(f"    Written to {File}")
             except errors.NotFoundException:
                 log.info("Challenge with this ID does not exist.")
 
