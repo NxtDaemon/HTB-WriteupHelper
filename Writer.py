@@ -4,6 +4,7 @@ from pwn import *
 import argparse
 import os
 import pathlib
+import re
 
 def _LEN(value):
     if value != None:
