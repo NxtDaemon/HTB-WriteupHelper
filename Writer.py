@@ -33,8 +33,8 @@ class Writeup():
         if self.Challenge_ID:
             self.Challenge()
 
-        else:
-            log.Error("ID Argument Missing")
+        if not self.Challenge_ID and not self.Machine_ID:
+            log.error("ID Argument Missing")
 
     def MachineWriteup(self):
         for number in self.Machine_ID:
@@ -43,6 +43,9 @@ class Writeup():
                 MachineObj = self.Client.get_machine(number)
                 Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Boxes\\Headers\\{MachineObj.name}.md"
 
+                Filename = re.sub(r'[^\w\-_\. ]', '_', Filename)
+
+                
                 if number <= 3:
                     MachineIP = "10.10.10." + str(number)
                 else:
@@ -50,14 +53,14 @@ class Writeup():
                         str(number - 3)  # ! May Need Fixing
 
                 with open(Filename, "w+") as f:
-                    Content = f"HTB - {MachineObj.name.title()}\n"
+                    Content = f"HTB - {MachineObj.name.title()} [{MachineObj.difficulty}]\n"
                     Content += f"**Name** : {MachineObj.name}\n"
                     Content += f"**Difficulty** : {MachineObj.difficulty}\n"
-                    Content += f"**OS** : {MachineObj.os}"
+                    Content += f"**OS** : {MachineObj.os}\n"
                     Content += f'**URL** : [{"https://app.hackthebox.eu/machines/" + str(number)}]({"https://app.hackthebox.eu/machines/" + str(self.Machine_ID)})\n'
                     Content += f"**Points** : {MachineObj.points}\n"
                     Content += f"**Stars** : {MachineObj.stars}\n"
-                    Content += f"**Internal IP** : 10.10.10.{MachineIP}\n"
+                    Content += f"**Internal IP** : {MachineIP}\n"
                     f.write(Content)
 
                 log.progress(f"    Written to {Filename}\n")
@@ -71,6 +74,8 @@ class Writeup():
                 ChallengeObj = self.Client.get_challenge(number)
 
                 Filename = f'C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Challenges\\Headers\\{ChallengeObj.name}.md'
+                
+                Filename = re.sub(r'[^\w\-_\. ]', '_', Filename)    
                 with open(Filename, "a+", encoding='utf-8') as f:
                     Content = f"HTB - {ChallengeObj.name.title()} [{ChallengeObj.category}]\n\n"
                     Content += f"```\n**Name** : {ChallengeObj.name}\n"
@@ -96,7 +101,7 @@ Args = Parser.parse_args()
 
 if __name__ == "__main__":
     # GetPass Securely
-    Password = getpass(f"\033[93mInput your Password > \033[0m")
+    # Password = getpass(f"\033[93mInput your Password > \033[0m")
     Client = HTBClient(email="", password=Password)
     log.info(f"Authenticated as {green(Client.user.name)}")
     c, m = _LEN(Args.challenge), _LEN(Args.machine)
