@@ -6,6 +6,7 @@ import os
 import pathlib
 import re
 
+
 def _LEN(value):
     if value != None:
         return(len(value))
@@ -18,20 +19,25 @@ def green(text):
 
 
 class Writeup():
-    def __init__(self, Args, Client):
+    def __init__(self, Args, Client, Creds=False):
         self.Machine_ID = Args.machine
         self.Challenge_ID = Args.challenge
         self.Client = Client
-        
+        self.WriteupFolder = "C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\"
+        if Creds:
+            Username, Password = Creds[:2]
+
         if os.name == "posix":
-            self.Home = os.getenv("HOME") 
+            self.Home = os.getenv("HOME")
         elif os.name == "nt":
             self.Home = os.getenv("%UserProfile%")
 
         if self.Machine_ID:
+            log.info(f"Processing Machines : {green(self.Machine_ID)}")
             self.MachineWriteup()
 
         if self.Challenge_ID:
+            log.info(f"Processing Challenges : {green(self.Challenge_ID)}")
             self.ChallengeWriteup()
 
         if not self.Challenge_ID and not self.Machine_ID:
@@ -44,10 +50,8 @@ class Writeup():
                 MachineObj = self.Client.get_machine(number)
                 File = f"{MachineObj.name}.md"
                 File = re.sub(r'[^\w\-_\. ]', '_', File)
-                Filename = f"C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Boxes\\_Headers\\{File}"
+                Filename = self.WriteupFolder + f"Boxes\\_Headers\\{File}"
 
-
-                
                 if number <= 3:
                     MachineIP = "10.10.10." + str(number)
                 else:
@@ -77,8 +81,8 @@ class Writeup():
 
                 File = f"{ChallengeObj.name}.md"
                 File = re.sub(r'[^\w\-_\. ]', '_', File)
-                Filename = f'C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\Challenges\\_Headers\\{File}'
-                
+                Filename = self.WriteupFolder + f'Challenges\\_Headers\\{File}'
+
                 with open(Filename, "a+", encoding='utf-8') as f:
                     Content = f"HTB - {ChallengeObj.name.title()} [{ChallengeObj.category}]\n\n"
                     Content += f"```\n**Name** : {ChallengeObj.name}\n"
@@ -96,17 +100,30 @@ class Writeup():
 
 # Argparse
 Parser = argparse.ArgumentParser()
-Parser.add_argument("-challenge", "-c", metavar="", help="Use this to run writeup creation on a certain challenge",
+Parser.add_argument("-challenge", "-c", metavar="", help="Use this to pass ChallengeIDs in order to generate the attached writeups",
                     action="store", nargs="*", default=None, type=int)
-Parser.add_argument("-machine", "-m", metavar="", help="Use this to run writeup creation on a certain machine",
+Parser.add_argument("-machine", "-m", metavar="", help="Use this to pass MachineIDs in order to generate the attached writeups",
                     action="store", nargs="*", default=None, type=int)
 Args = Parser.parse_args()
 
 if __name__ == "__main__":
-    # GetPass Securely
-    # Password = getpass(f"\033[93mInput your Password > \033[0m")
-    Client = HTBClient(email="", password=Password)
-    log.info(f"Authenticated as {green(Client.user.name)}")
+    if ".creds" in os.listdir(os.getcwd()):
+        log.info("".ljust(70, "="))
+        log.progress("Processing .creds file")
+        Email, Password = open(".creds").read().split("\n")[:2]
+        log.progress("    Email in .creds file ".ljust(28) + ": " + Email)
+        log.progress("    Password in .creds file ".ljust(
+            28) + ": " + len(Password) * '*' + "\n")
+        log.info("".ljust(70, "="))
+
+    else:
+        Email = str(input("\033[93mEnter your Email > \033[0m"))
+        Password = getpass(f"\033[93mInput your Password > \033[0m")
+
+    Client = HTBClient(email=Email, password=Password)
+    log.success(f"Authenticated as {green(Client.user.name)}")
     c, m = _LEN(Args.challenge), _LEN(Args.machine)
     log.info(f"Processing {green(c)} Challenges and {green(m)} Machines")
+    log.info("".ljust(70, "="))
+
     Writeup(Args, Client)
