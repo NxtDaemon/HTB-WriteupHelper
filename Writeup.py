@@ -5,7 +5,11 @@ import argparse
 import os
 import pathlib
 import re
-from HostDict import MachineIPs
+
+try:
+    from HostDict import MachineIPs
+except ModuleNotFoundError:
+    log.error("Please Run ProcessHosts.py File")
 
 
 def _LEN(value):
@@ -53,7 +57,11 @@ class Writeup():
                 File = re.sub(r'[^\w\-_\. ]', '_', File)
                 Filename = self.WriteupFolder + f"Boxes\\_Headers\\{File}"
 
-                MachineIP = MachineIPs[str(number)]
+                try:
+                    MachineIP = MachineIPs[str(number)]
+                except KeyError:
+                    log.error(
+                        "Please Run Process Hosts.py with the -Refresh Flag")
 
                 with open(Filename, "w+") as f:
                     Content = f"HTB - {MachineObj.name.title()} [{MachineObj.difficulty}]\n"
