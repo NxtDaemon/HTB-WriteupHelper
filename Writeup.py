@@ -60,7 +60,7 @@ class Writeup():
                     Content += f"**Name** : {MachineObj.name}\n"
                     Content += f"**Difficulty** : {MachineObj.difficulty}\n"
                     Content += f"**OS** : {MachineObj.os}\n"
-                    Content += f'**URL** : [{"https://app.hackthebox.eu/machines/" + str(number)}]({"https://app.hackthebox.eu/machines/" + str(self.Machine_ID)})\n'
+                    Content += f'**URL** : [{"https://app.hackthebox.eu/machines/" + str(number)}]({"https://app.hackthebox.eu/machines/" + str(number)})\n'
                     Content += f"**Points** : {MachineObj.points}\n"
                     Content += f"**Stars** : {MachineObj.stars}\n"
                     Content += f"**Internal IP** : {MachineIP}\n"
