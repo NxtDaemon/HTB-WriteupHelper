@@ -5,6 +5,7 @@ import argparse
 import os
 import pathlib
 import re
+from HostDict import MachineIPs
 
 
 def _LEN(value):
@@ -52,11 +53,7 @@ class Writeup():
                 File = re.sub(r'[^\w\-_\. ]', '_', File)
                 Filename = self.WriteupFolder + f"Boxes\\_Headers\\{File}"
 
-                if number <= 3:
-                    MachineIP = "10.10.10." + str(number)
-                else:
-                    MachineIP = "10.10.10." + \
-                        str(number - 3)  # ! May Need Fixing
+                MachineIP = MachineIPs[str(number)]
 
                 with open(Filename, "w+") as f:
                     Content = f"HTB - {MachineObj.name.title()} [{MachineObj.difficulty}]\n"
