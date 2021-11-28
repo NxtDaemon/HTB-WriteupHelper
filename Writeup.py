@@ -25,8 +25,8 @@ def green(text):
 
 class Writeup():
     def __init__(self, Args, Client, Creds=False):
-        self.Machine_ID = Args.machine
-        self.Challenge_ID = Args.challenge
+        self.Machine_ID = sorted(Args.machine) if Args.machine else None
+        self.Challenge_ID = sorted(Args.challenge) if Args.challenge else None
         self.Client = Client
         self.WriteupFolder = "C:\\Users\\Owner\\OneDrive\\Documents\\OneDrive\\Documents\\HTB Writeups\\WriteMeUp\\TimeToWriteUp\\"
         if Creds:
