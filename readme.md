@@ -1,5 +1,8 @@
 # HTB Writeup Toolkit
-this relies on [clubby's python library](https://github.com/clubby789/htb-api) to work and interface with the HTB API and perform actions based on your input. for instance my challenge writeups generally follow of the following syntax 
+this relies on [clubby's python library](https://github.com/clubby789/htb-api) to work and interface with the HTB API and perform actions based on your input. This also relies on [fx2301's HTB Hostnames](https://github.com/fx2301/htb_etc_hosts/) to collect up to date HTB IPs and their associated IDs
+
+
+my writeups generally follow of the following syntax 
 <br><br>
 
 ### Challenges 
@@ -28,6 +31,13 @@ HTB - $NAME [$DIFFICULTY]
 
 
 this can often be quite annoying and laborious to type out so HTB Writeup Helper will aim to automate that for me <br>
+
+# Setup Todolist 
+- [ ] Run ProcessHosts.py with `-Refresh` flag
+- [ ] Populate .creds with your credentials (so far I havent added code for 2fa support)
+- [ ] run Writeup.py as your wish
+
+
 
 # How to use Writeup.py 
 
@@ -74,10 +84,4 @@ The following options are inlcuded in the writeup utility
  
  
  
- ## *Disclaimer*
- There is a slight issue with the Machine IPs in that I am unsure of the order that they are generated in, due to HTB having 256 + machines this complications things
- ```
- Devzat 398 -> 10.10.11.118 [1:143]
- Forge 376 -> 10.10.11.111 [1:121]
- Shibboleth 410 -> 10.10.11.124 [1:155]
- ```
+
